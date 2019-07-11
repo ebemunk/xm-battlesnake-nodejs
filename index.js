@@ -11,7 +11,7 @@ var routes = require('./routes')
 
 // For deployment to Heroku, the port needs to be set using ENV, so
 // we check for the port number in process.env
-app.set('port', (process.env.PORT || 9001))
+app.set('port', process.env.PORT || 9001)
 
 app.enable('verbose errors')
 
@@ -19,17 +19,16 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(routes)
 
-app.use('*',function (req, res, next) {
-  console.log('here');
+app.use('*', function(req, res, next) {
+  console.log('here')
   if (req.url === '/favicon.ico') {
-    
     // Short-circuit favicon requests
-    res.set({'Content-Type': 'image/x-icon'})
+    res.set({ 'Content-Type': 'image/x-icon' })
     res.status(200)
     res.end()
     next()
   } else {
-    console.log('there');
+    console.log('there')
     // Reroute all 404 routes to the 404 handler
     var err = new Error()
     err.status = 404
@@ -40,7 +39,7 @@ app.use('*',function (req, res, next) {
 })
 
 // 404 handler middleware, respond with JSON only
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   if (err.status !== 404) {
     return next(err)
   }
@@ -55,7 +54,7 @@ app.use(function (err, req, res, next) {
 })
 
 // 500 handler middleware, respond with JSON only
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   var statusCode = err.status || 500
   console.log(err)
   res.status(statusCode)
@@ -67,6 +66,6 @@ app.use(function (err, req, res, next) {
   return
 })
 
-var server = app.listen(app.get('port'), function () {
+var server = app.listen(app.get('port'), function() {
   console.log('Server listening on port %s', app.get('port'))
 })
