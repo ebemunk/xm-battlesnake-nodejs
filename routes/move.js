@@ -44,6 +44,7 @@ const moveFn = (req, res) => {
     })
 
   let move
+  let taunt
 
   const closestFood = food[0]
 
@@ -55,6 +56,7 @@ const moveFn = (req, res) => {
     console.log('FOOD', next)
 
     move = udlr(myHead, next)
+    taunt = 'NOM NOMS'
   } else {
     const sortedEnemies = enemies.sort((a, b) => {
       const aHead = a.coords[0]
@@ -76,6 +78,7 @@ const moveFn = (req, res) => {
       console.log('TAIL', next)
 
       move = udlr(myHead, next)
+      taunt = 'CHASE MY TAIL'
     } else {
       grid.setWalkableAt(target[0], target[1], true)
 
@@ -86,12 +89,13 @@ const moveFn = (req, res) => {
       console.log('TARGET', next)
 
       move = udlr(myHead, next)
+      taunt = `COMING FOR U ${sortedEnemies[0].name}`
     }
   }
 
   var data = {
-    move: move,
-    taunt: 'Outta my way, snake!'
+    move,
+    taunt
   }
 
   console.log('-----')
